@@ -1,33 +1,49 @@
-var productContainer = document.getElementById("productContainer"); {
+var productContainer = document.getElementById("productContainer"); 
 
-    function productDom(xrhData) {
+    function productDom(xhrData) {
         var productString = "";
-        var currentproduct;
-        for (var i = 0; i < xhrData.product.lenth; i++);
-        currentDinosaur = xhrData.product[i];
+        var currentProduct;
+        for (var i = 0; i < xhrData.products.length; i++) {
+        currentProduct = xhrData.products[i];
 
         productString += `<div class="col-sm-6 col-md-4">`;
-        // productString += `<div class="thumbnail">`;
-        // productString += `<img src="${currentproduct.url}" alt="dino">`;
-        // productString += `<div class="caption">`;
-        productString += `<h3>${currentproduct.name}</h3>`;
-        productString += `<p>is a ${currentproduct.price}</p>`;
-        productString += `<p>is a ${currentproduct.category_id}</p>`;
+        productString += `<h3>${currentProduct.name}</h3>`;
+        productString += `<p>is a ${currentProduct.price}</p>`;
+        // productString += `<p>is a ${currentProduct.category_id}</p>`;
         productString += `</div></div></div>`;
 
         productContainer.innerHTML = productString;
 
-    }
+    };
 }
 
+var departmentContainer = document.getElementById("departmentContainer"); 
+
+    function departmentDom(xhrData) {
+        var departmentString = "";
+        var currentDepartment;
+        for (var j = 0; j < xhrData.categories.length; j++) {
+        currentDepartment = xhrData.categories[j];
+
+        departmentString += `<div class="col-sm-6 col-md-4">`;
+        departmentString += `<h3>${currentDepartment.name}</h3>`;
+        departmentString += `<p>is a ${currentDepartment.season_discount}</p>`;
+        departmentString += `<p>is a ${currentDepartment.discount}</p>`;
+        departmentString += `</div></div></div>`;
+
+        departmentContainer.innerHTML = departmentString;
+
+    };
+}
 
 function useIfWorks() {
 
     var data = JSON.parse(this.responseText);
-    makeDOM(data);
+    productDom(data);
+    console.log(xhrData);
 }
 
-function useifDoesntWork() {
+function useIfDoesntWork() {
 
 
 }
@@ -35,6 +51,12 @@ function useifDoesntWork() {
 
 var myRequest = new XMLHttpRequest();
 myRequest.addEventListener("load", useIfWorks);
-myRequest.addEventListener("error", useifDoesntWork);
-myRequest.open("GET", "main.json");
+myRequest.addEventListener("error", useIfDoesntWork);
+myRequest.open("GET", "department.json");
 myRequest.send();
+
+var myRequestTwo = new XMLHttpRequest();
+myRequestTwo.addEventListener("load", useIfWorks);
+myRequestTwo.addEventListener("error", useIfDoesntWork);
+myRequestTwo.open("GET", "main.json");
+myRequestTwo.send();
