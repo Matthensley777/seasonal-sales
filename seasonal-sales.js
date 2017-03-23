@@ -1,3 +1,4 @@
+
 var productContainer = document.getElementById("productContainer");
 
 function productDom(xhrData) {
@@ -27,11 +28,9 @@ function departmentDom(xhrData) {
         departmentString += `<div class="col-sm-6 col-md-4">`;
         departmentString += `<h1>${currentDepartment.name}</h1>`;
         departmentString += `<p><button class="discount"id="discount-${currentDepartment.season_discount}">${currentDepartment.season_discount}</button></p>`;
-        // departmentString += `<p>Press for discount ${currentDepartment.discount}</p>`;
         departmentString += `</div></div></div>`;
 
         departmentContainer.innerHTML = departmentString;
-        // console.log(currentDepartment);
 
     };
     discountInfo();
@@ -67,13 +66,16 @@ myRequestTwo.send();
 function discountInfo() {
 
 var sDiscount = document.getElementsByClassName("discount");
-for (var i = 0; i < sDiscount.length; i++) {
-sDiscount[i].addEventListener("click", seasonalDiscount);
+for (var k = 0; k < sDiscount.length; k++) {
+sDiscount[k].addEventListener("click", seasonalDiscount);
 }
 
-    function seasonalDiscount(season) {
-        if (season.value === winter);
-        console.log(season);
+        var winter = "";
+        function seasonalDiscount(season) {
+            if (season.value === winter.getElementById(1)); {
+                
+            console.log(season);
+        }
     }
 
 }
