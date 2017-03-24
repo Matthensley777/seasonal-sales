@@ -1,45 +1,56 @@
+var departments =[];
+var products = [];
+
+var dropdown = document.getElementById("dropdown");
+dropdown.addEventListener("change", function(event){
+    var optionsArray = event.target.options;
+    var selecctedOption = optionsArray[event.target.options.selectedIndex];
+    productDom(selecctedOption.value);
+});
+
 
 var productContainer = document.getElementById("productContainer");
 
-function productDom(xhrData) {
-    var productString = "";
+function productDom(discountSeason) {
+    var productBuilder = "";
     var currentProduct;
-    for (var i = 0; i < xhrData.products.length; i++) {
-        currentProduct = xhrData.products[i];
+    for (var i = 0; i < products.length; i++) {
+        currentProduct = products[i];
 
-        productString += `<div class="col-sm-6 col-md-4">`;
-        productString += `<h3><br><br>${currentProduct.name}<br></h3>`;
-        productString += `<p>${currentProduct.price}</p>`;
-        productString += `</div></div></div>`;
+        productBuilder += `<div class="col-sm-6 col-md-4">`;
+        productBuilder += `<h3>${currentProduct.name}</h3>`;
+        productBuilder += `</div>`;
+    if(discountSeason === products[i].catagory_season_discount){
+        productBuilder += `<div class="price">${products[i].season_price}</div>`
+    }
+        else {
+            productBuilder += `<div class="price">${products[i].price}</div>`
+        }
+    }
 
-        productContainer.innerHTML = productString;
-
-    };
-}
-
-var departmentContainer = document.getElementById("departmentContainer");
-
-function departmentDom(xhrData) {
-    var departmentString = "";
-    var currentDepartment;
-    for (var j = 0; j < xhrData.categories.length; j++) {
-        currentDepartment = xhrData.categories[j];
-
-        departmentString += `<div class="col-sm-6 col-md-4">`;
-        departmentString += `<h1>${currentDepartment.name}</h1>`;
-        departmentString += `<p><button class="discount"id="discount-${currentDepartment.season_discount}">${currentDepartment.season_discount}</button></p>`;
-        departmentString += `</div></div></div>`;
-
-        departmentContainer.innerHTML = departmentString;
+        productContainer.innerHTML = productBuilder;
 
     };
-    discountInfo();
-}
 
-function useIfWorks() {
 
-    var data = JSON.parse(this.responseText);
-    productDom(data);
+
+
+function useForProducts() {
+
+    products = JSON.parse(this.responseText).products;
+    products.forEach(function(product){
+            for(var j = 0; j < departments.length; j++){
+                if(product.category_id === departments[j].id){
+                    product["catagory_name"] = departments[j].name;
+                    product["catagory_discount"] = departments[j].discount;
+                    product["catagory_season_discount"] = departments[j].season_discount;
+                    product["season_price"] = product.price-(product.price * departments[j].discount)
+                }
+
+            }
+        });
+
+    productDom("none");
 
 }
 
@@ -47,9 +58,8 @@ function useIfWorks() {
 
 function useForDepartment() {
 
-    var data = JSON.parse(this.responseText);
-    departmentDom(data);
-
+    departments = JSON.parse(this.responseText).departments;
+    productXHR();
 }
 
 
@@ -58,29 +68,13 @@ myRequest.addEventListener("load", useForDepartment);
 myRequest.open("GET", "department.json");
 myRequest.send();
 
-var myRequestTwo = new XMLHttpRequest();
-myRequestTwo.addEventListener("load", useIfWorks);
-myRequestTwo.open("GET", "main.json");
-myRequestTwo.send();
-
-function discountInfo() {
-
-var sDiscount = document.getElementsByClassName("discount");
-for (var k = 0; k < sDiscount.length; k++) {
-sDiscount[k].addEventListener("click", seasonalDiscount);
-}
-
-        var winter = "";
-        function seasonalDiscount(season) {
-            if (season.value === winter.getElementById(1)); {
-                
-            console.log(season);
-        }
-    }
+function productXHR(){
+    var myRequestTwo = new XMLHttpRequest();
+    myRequestTwo.addEventListener("load", useForProducts);
+    myRequestTwo.open("GET", "main.json");
+    myRequestTwo.send();
 
 }
-
-
 
 
 
